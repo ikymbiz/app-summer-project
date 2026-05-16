@@ -1,0 +1,25 @@
+{
+  "name": "夏休み研究・観察プリント作成ツール",
+  "short_name": "研究観察プリント",
+  "description": "A4で印刷できる、夏休み研究・観察プリント作成ツールです。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef4ff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
