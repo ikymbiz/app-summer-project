@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gofiles - Cloud Storage Made Simple</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ========== ヘッダー ========== -->
+    <header class="app-header">
+        <button class="hamburger-btn" id="menuOpenBtn" aria-label="Open menu">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="header-actions">
+            <button class="header-action" aria-label="Download all" title="Download all">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== サイドメニュー ========== -->
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+    <aside class="side-menu" id="sideMenu">
+        <div class="side-menu-head">
+            <div class="logo">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/></svg>
+                gofiles
+            </div>
+            <button class="side-menu-close" id="menuCloseBtn" aria-label="Close menu">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <nav class="side-menu-nav">
+            <a href="index.html"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12 12 3l9 9"/><path d="M5 10v10h14V10"/></svg> Home</a>
+            <a href="#"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14l-5-4.87 6.91-1.01z"/></svg> Premium</a>
+            <a href="#"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg> API</a>
+            <a href="#"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> FAQ</a>
+            <a href="#"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Contact</a>
+            <a href="#"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg> Log in</a>
+        </nav>
+        <div class="side-menu-foot">
+            © 2026 gofiles.uk
+        </div>
+    </aside>
+
+    <!-- ========== メイン ========== -->
+    <main class="main">
+
+        <!-- Premium 広告バー -->
+        <div class="ad-bar">
+            To disable ads, <a href="#">upgrade</a> your account to Premium
+        </div>
+
+        <!-- 説明 / リンクボックス -->
+        <div class="desc-box">
+            t.me/sample_channel
+        </div>
+
+        <!-- フォルダ情報 -->
+        <div class="folder-block">
+            <div class="folder-icon-wrap">
+                <!-- 黄色フォルダ (二段重ねぽく) -->
+                <svg class="folder-svg" viewBox="0 0 64 64" fill="none">
+                    <path d="M6 14a3 3 0 0 1 3-3h14l5 6h27a3 3 0 0 1 3 3v32a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3z" fill="#f5b800" stroke="#d99e00" stroke-width="1.4"/>
+                    <path d="M6 22h52v30a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3z" fill="#ffcc33"/>
+                    <path d="M6 22h52" stroke="#d99e00" stroke-width="1.2"/>
+                </svg>
+                <span class="folder-badge">3</span>
+            </div>
+            <div class="folder-meta">
+                <div class="folder-name">4brDkZ</div>
+                <div class="folder-date">2026/5/16 10:47:02</div>
+                <button class="folder-menu-btn" aria-label="More">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ツールバー -->
+        <div class="toolbar">
+            <div class="check-cell">
+                <span class="check" id="selectAll" data-role="select-all"></span>
+            </div>
+            <div class="toolbar-spacer"></div>
+            <button class="tool-btn green" title="Move">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            </button>
+            <button class="tool-btn" title="Sort">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><polyline points="7 4 7 20"/><polyline points="11 8 7 4 3 8"/><polyline points="17 20 17 4"/><polyline points="13 16 17 20 21 16"/></svg>
+            </button>
+            <button class="tool-btn" title="Filter">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            </button>
+            <button class="tool-btn" title="Search">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <button class="tool-btn" title="Refresh">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/></svg>
+            </button>
+        </div>
+
+        <!-- ファイル1: 1.mp4 -->
+        <article class="file-row" data-name="1.mp4">
+            <div class="file-main">
+                <div class="file-head">
+                    <span class="check" data-role="select"></span>
+                    <span class="file-type-icon video">
+                        <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3.5l3.5 2.5a.5.5 0 0 0 .5-.4V7.4a.5.5 0 0 0-.5-.4L20 9.5V6a2 2 0 0 0-2-2z"/></svg>
+                    </span>
+                    <div class="file-info">
+                        <div class="file-name">1.mp4</div>
+                        <div class="file-meta">2026/5/16 10:52:05<br>641.5 MB</div>
+                    </div>
+                </div>
+                <div class="media-thumb">
+                    <div class="placeholder gradient-a">
+                        <div class="play-overlay">
+                            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="file-actions">
+                <button class="file-action" title="Play">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                </button>
+                <button class="file-action" title="Download">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="file-action" title="More">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="18" r="1.6"/></svg>
+                </button>
+            </div>
+        </article>
+
+        <!-- ファイル2: 2.mp4 -->
+        <article class="file-row" data-name="2.mp4">
+            <div class="file-main">
+                <div class="file-head">
+                    <span class="check" data-role="select"></span>
+                    <span class="file-type-icon video">
+                        <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3.5l3.5 2.5a.5.5 0 0 0 .5-.4V7.4a.5.5 0 0 0-.5-.4L20 9.5V6a2 2 0 0 0-2-2z"/></svg>
+                    </span>
+                    <div class="file-info">
+                        <div class="file-name">2.mp4</div>
+                        <div class="file-meta">2026/5/16 10:49:17<br>167.0 MB</div>
+                    </div>
+                </div>
+                <div class="media-thumb">
+                    <div class="placeholder gradient-b">
+                        <div class="play-overlay">
+                            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="file-actions">
+                <button class="file-action" title="Play">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+                </button>
+                <button class="file-action" title="Download">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="file-action" title="More">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="6" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="18" r="1.6"/></svg>
+                </button>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- ========== フッター ========== -->
+    <footer class="footer">
+        <nav class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Copyright</a>
+        </nav>
+    </footer>
+
+    <!-- トースト -->
+    <div class="toast" id="toast">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="toastText">Done</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
