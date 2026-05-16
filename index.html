@@ -10,14 +10,15 @@
       --card: #ffffff;
       --text: #111827;
       --muted: #64748b;
-      --line: #111827;
-      --light-line: #cbd5e1;
+      --line: #555555;
+      --light-line: #a8a8a8;
       --accent: #2563eb;
       --paper-w: 210mm;
       --paper-h: 297mm;
       --paper-padding: 12mm;
       --photo-w: 95mm;
       --photo-h: 70mm;
+      --preview-zoom: 0.55;
     }
 
     * { box-sizing: border-box; }
@@ -30,14 +31,14 @@
     }
 
     header {
-      padding: 18px 20px;
+      padding: 16px 20px;
       background: linear-gradient(135deg, #eff6ff, #ffffff);
       border-bottom: 1px solid #dbe4f0;
     }
 
     header h1 {
       margin: 0 0 6px;
-      font-size: 22px;
+      font-size: 21px;
     }
 
     header p {
@@ -49,9 +50,9 @@
 
     .app {
       display: grid;
-      grid-template-columns: 330px 1fr;
-      gap: 18px;
-      padding: 18px;
+      grid-template-columns: 320px 1fr;
+      gap: 16px;
+      padding: 16px;
       align-items: start;
     }
 
@@ -79,19 +80,13 @@
       margin-bottom: 6px;
     }
 
-    input[type="text"], select, textarea {
+    select {
       width: 100%;
       border: 1px solid #cfd8e3;
       border-radius: 10px;
       padding: 9px 10px;
       font: inherit;
       background: #fff;
-    }
-
-    textarea {
-      min-height: 84px;
-      resize: vertical;
-      line-height: 1.6;
     }
 
     button, .file-label {
@@ -138,10 +133,35 @@
       margin: 8px 0 0;
     }
 
+    .format-list {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid #dbe4f0;
+      border-radius: 12px;
+      background: #f8fbff;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .check-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+
     .drop-zone {
       border: 2px dashed #9db7e8;
       border-radius: 14px;
-      padding: 14px;
+      padding: 13px;
       background: #f8fbff;
       text-align: center;
       color: #475569;
@@ -157,7 +177,15 @@
 
     .preview-wrap {
       overflow: auto;
-      padding: 6px 0 30px;
+      padding: 0 0 24px;
+      min-height: calc(100vh - 110px);
+    }
+
+    .preview-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 10px;
     }
 
     .paper {
@@ -169,66 +197,109 @@
       padding: var(--paper-padding);
       break-after: page;
       position: relative;
+      overflow: hidden;
     }
 
-    .page-title {
-      text-align: center;
-      font-size: 20pt;
+    @media screen {
+      .paper {
+        zoom: var(--preview-zoom);
+      }
+    }
+
+    .page-heading {
+      font-size: 18pt;
       font-weight: 800;
       letter-spacing: 0.04em;
-      margin: 0 0 8mm;
+      margin: 0 0 7mm;
+      color: #333;
     }
 
-    .cover-frame {
-      border: 2px solid var(--line);
-      border-radius: 8px;
-      padding: 8mm;
-      height: 100%;
+    .cover-page {
       display: flex;
       flex-direction: column;
       gap: 10mm;
     }
 
-    .cover-title-box {
-      border: 2px solid var(--line);
-      height: 42mm;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14pt;
-      font-weight: 700;
-    }
-
-    .cover-big-box {
-      border: 2px solid var(--line);
-      flex: 1;
-      min-height: 120mm;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13pt;
-      font-weight: 700;
-    }
-
-    .cover-lines {
+    .cover-title-row {
       display: grid;
-      gap: 9mm;
-      font-size: 13pt;
-      font-weight: 700;
-    }
-
-    .line-row {
-      display: grid;
-      grid-template-columns: 42mm 1fr;
+      grid-template-columns: 24mm 1fr;
       gap: 5mm;
       align-items: end;
+      font-size: 15pt;
+      font-weight: 800;
+      margin-top: 2mm;
     }
 
-    .line-row::after {
+    .cover-title-row::after {
       content: "";
-      border-bottom: 2px solid var(--line);
-      height: 8mm;
       display: block;
+      height: 14mm;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cover-image-box {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      flex: 1;
+      min-height: 190mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+    }
+
+    .cover-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .empty-text {
+      color: #94a3b8;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.7;
+      padding: 8px;
+    }
+
+    .research-page {
+      display: flex;
+      flex-direction: column;
+      gap: 8mm;
+    }
+
+    .writing-section {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .writing-section.research-large { min-height: 100mm; }
+    .writing-section.observation-large { min-height: 58mm; }
+    .writing-section.observation-medium { min-height: 50mm; }
+    .writing-section.observation-small { min-height: 40mm; }
+
+    .section-label {
+      font-size: 14pt;
+      font-weight: 800;
+      margin-bottom: 3mm;
+      color: #333;
+    }
+
+    .ruled-lines {
+      flex: 1;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 9.5mm,
+        var(--light-line) 9.7mm,
+        transparent 10mm
+      );
     }
 
     .observation-page {
@@ -239,15 +310,37 @@
 
     .top-area {
       display: grid;
-      grid-template-columns: var(--photo-w) 1fr;
+      grid-template-columns: 1fr var(--photo-w);
       gap: 8mm;
       align-items: start;
+    }
+
+    .small-writing-box {
+      display: grid;
+      gap: 7mm;
+      padding-top: 1mm;
+    }
+
+    .hand-line {
+      display: grid;
+      grid-template-columns: 26mm 1fr;
+      gap: 4mm;
+      align-items: end;
+      font-size: 13pt;
+      font-weight: 800;
+      color: #333;
+    }
+
+    .hand-line::after {
+      content: "";
+      border-bottom: 1px solid var(--line);
+      height: 10mm;
     }
 
     .photo-box {
       width: var(--photo-w);
       height: var(--photo-h);
-      border: 2px solid var(--line);
+      border: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -262,75 +355,17 @@
       display: block;
     }
 
-    .empty-photo {
-      color: #94a3b8;
-      text-align: center;
-      font-size: 12px;
-      line-height: 1.6;
-      padding: 8px;
-    }
-
-    .small-writing-box {
-      display: grid;
-      gap: 6mm;
-      padding-top: 1mm;
-    }
-
-    .hand-line {
-      display: grid;
-      grid-template-columns: 32mm 1fr;
-      gap: 4mm;
-      align-items: end;
-      font-size: 13pt;
-      font-weight: 800;
-    }
-
-    .hand-line::after {
-      content: "";
-      border-bottom: 2px solid var(--line);
-      height: 9mm;
-    }
-
-    .writing-section {
-      border: 2px solid var(--line);
-      border-radius: 7px;
-      padding: 4mm;
-      min-height: 42mm;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .writing-section.large { min-height: 58mm; }
-    .writing-section.medium { min-height: 50mm; }
-
-    .section-label {
-      font-size: 14pt;
-      font-weight: 800;
-      margin-bottom: 3mm;
-    }
-
-    .ruled-lines {
-      flex: 1;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 9.5mm,
-        var(--light-line) 9.7mm,
-        transparent 10mm
-      );
-    }
-
-    .card-tools {
+    .page-tools {
       display: flex;
       gap: 6px;
       padding: 8px;
       background: #f8fafc;
       border: 1px dashed #cbd5e1;
       border-radius: 10px;
-      margin-top: 6mm;
+      margin-top: auto;
     }
 
-    .card-tools button {
+    .page-tools button {
       padding: 7px 9px;
       border-radius: 9px;
       font-size: 12px;
@@ -338,20 +373,16 @@
       flex: 1;
     }
 
-    .no-print-note {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      margin: 8px 0 0;
-    }
+    .is-hidden { display: none !important; }
 
-    .cover-page.hidden-in-preview {
-      display: none;
+    @media screen and (max-width: 1200px) {
+      :root { --preview-zoom: 0.48; }
     }
 
     @media screen and (max-width: 900px) {
       .app { grid-template-columns: 1fr; }
       .panel { position: static; }
+      :root { --preview-zoom: 0.42; }
     }
 
     @page { size: A4 portrait; margin: 0; }
@@ -359,7 +390,7 @@
     @media print {
       body { background: #fff; }
 
-      header, .panel, .no-print-note, .card-tools {
+      header, .panel, .preview-note, .page-tools {
         display: none !important;
       }
 
@@ -371,6 +402,7 @@
       .preview-wrap {
         overflow: visible;
         padding: 0;
+        min-height: 0;
       }
 
       .paper {
@@ -380,6 +412,7 @@
         box-shadow: none;
         page-break-after: always;
         break-after: page;
+        zoom: 1 !important;
       }
 
       .paper:last-child {
@@ -387,20 +420,8 @@
         break-after: auto;
       }
 
-      .empty-photo {
+      .empty-text {
         visibility: hidden !important;
-      }
-
-      body.print-cover-only .observation-page {
-        display: none !important;
-      }
-
-      body.print-observations-only .cover-page {
-        display: none !important;
-      }
-
-      .cover-page.hidden-in-preview {
-        display: block !important;
       }
     }
   </style>
@@ -408,48 +429,48 @@
 <body>
   <header>
     <h1>夏休み観察プリント作成ツール A4手書き版</h1>
-    <p>A4専用。写真は約7cm×9.5cmで配置し、観察内容は手書きしやすい大きめの罫線欄にしています。</p>
+    <p>写真を入れて印刷し、文字は手書きできる観察用フォーマットです。画面表示ではA4全体が見えるよう縮小表示します。</p>
   </header>
 
   <main class="app">
     <aside class="panel">
-      <h2>設定</h2>
+      <h2>フォーマット選択</h2>
+
+      <div class="control format-list">
+        <label class="check-row"><input id="showCover" type="checkbox" checked> 表紙</label>
+        <label class="check-row"><input id="showResearch" type="checkbox" checked> 調べるもの・調べる理由</label>
+        <label class="check-row"><input id="showObservation" type="checkbox" checked> 観察カード</label>
+      </div>
+
+      <div class="control">
+        <label class="file-label" for="coverPhotoInput">表紙の写真・絵を追加</label>
+        <input id="coverPhotoInput" type="file" accept="image/*">
+        <p class="hint">表紙の大きな枠に表示されます。文字や見出しは手書きできます。</p>
+      </div>
 
       <div class="drop-zone" id="dropZone">
-        写真をここにドラッグ＆ドロップ<br>または下のボタンから追加
+        観察カード用の写真を<br>ここにドラッグ＆ドロップ
       </div>
 
       <div class="control">
-        <label class="file-label" for="photoInput">写真を追加する</label>
+        <label class="file-label" for="photoInput">観察写真を追加する</label>
         <input id="photoInput" type="file" accept="image/*" multiple>
-        <p class="hint">写真1枚につき、A4の観察ページを1枚作ります。写真は外部送信されません。</p>
+        <p class="hint">写真1枚につきA4の観察カードを1枚作ります。</p>
       </div>
 
       <div class="control">
-        <label for="photoOrientation">写真の向き</label>
+        <label for="photoOrientation">観察写真の向き</label>
         <select id="photoOrientation">
           <option value="landscape">横 約9.5cm × 7cm</option>
           <option value="portrait">縦 約7cm × 9.5cm</option>
         </select>
       </div>
 
-      <div class="control">
-        <label for="coverPreview">画面での表紙表示</label>
-        <select id="coverPreview">
-          <option value="show">表示する</option>
-          <option value="hide">表示しない</option>
-        </select>
-      </div>
-
       <div class="button-grid one">
-        <button class="primary" id="printAllBtn">表紙と観察ページを印刷</button>
+        <button class="primary" id="printBtn">チェックしたページを印刷</button>
       </div>
       <div class="button-grid">
-        <button id="printCoverBtn">表紙だけ印刷</button>
-        <button id="printPagesBtn">観察ページだけ印刷</button>
-      </div>
-      <div class="button-grid">
-        <button id="addBlankBtn">写真なしページ追加</button>
+        <button id="addBlankBtn">写真なしカード追加</button>
         <button id="saveBtn">下書き保存</button>
       </div>
       <div class="button-grid">
@@ -458,30 +479,32 @@
       </div>
 
       <p class="hint">
-        印刷時はブラウザの印刷設定を「A4・縦・倍率100%・余白なしまたは既定」にしてください。グレーの案内文は印刷時に消えます。
+        印刷時は「A4・縦・倍率100%」がおすすめです。グレーの案内文や画面用ボタンは印刷されません。
       </p>
     </aside>
 
     <section class="preview-wrap">
+      <p class="preview-note">チェックしたフォーマットだけを表示・印刷します。</p>
       <div id="pages"></div>
-      <p class="no-print-note">ここが印刷プレビューです。表紙と観察ページは別々にも印刷できます。</p>
     </section>
   </main>
 
   <script>
     const state = {
-      pages: []
+      coverImage: '',
+      observationPages: []
     };
 
     const els = {
       pages: document.getElementById('pages'),
+      showCover: document.getElementById('showCover'),
+      showResearch: document.getElementById('showResearch'),
+      showObservation: document.getElementById('showObservation'),
+      coverPhotoInput: document.getElementById('coverPhotoInput'),
       photoInput: document.getElementById('photoInput'),
       dropZone: document.getElementById('dropZone'),
       photoOrientation: document.getElementById('photoOrientation'),
-      coverPreview: document.getElementById('coverPreview'),
-      printAllBtn: document.getElementById('printAllBtn'),
-      printCoverBtn: document.getElementById('printCoverBtn'),
-      printPagesBtn: document.getElementById('printPagesBtn'),
+      printBtn: document.getElementById('printBtn'),
       addBlankBtn: document.getElementById('addBlankBtn'),
       saveBtn: document.getElementById('saveBtn'),
       loadBtn: document.getElementById('loadBtn'),
@@ -493,8 +516,7 @@
     }
 
     function applyPhotoSize() {
-      const orientation = els.photoOrientation.value;
-      if (orientation === 'portrait') {
+      if (els.photoOrientation.value === 'portrait') {
         document.documentElement.style.setProperty('--photo-w', '70mm');
         document.documentElement.style.setProperty('--photo-h', '95mm');
       } else {
@@ -507,19 +529,27 @@
       applyPhotoSize();
       els.pages.innerHTML = '';
 
-      const cover = createCoverPage();
-      if (els.coverPreview.value === 'hide') {
-        cover.classList.add('hidden-in-preview');
-      }
-      els.pages.appendChild(cover);
-
-      if (state.pages.length === 0) {
-        addBlankPage(false);
+      if (els.showCover.checked) {
+        els.pages.appendChild(createCoverPage());
       }
 
-      state.pages.forEach((page, index) => {
-        els.pages.appendChild(createObservationPage(page, index));
-      });
+      if (els.showResearch.checked) {
+        els.pages.appendChild(createResearchPage());
+      }
+
+      if (els.showObservation.checked) {
+        if (state.observationPages.length === 0) addBlankPage(false);
+        state.observationPages.forEach(page => {
+          els.pages.appendChild(createObservationPage(page));
+        });
+      }
+
+      if (!els.pages.children.length) {
+        const message = document.createElement('p');
+        message.className = 'preview-note';
+        message.textContent = '表示するフォーマットを1つ以上チェックしてください。';
+        els.pages.appendChild(message);
+      }
 
       bindPageTools();
     }
@@ -527,66 +557,92 @@
     function createCoverPage() {
       const paper = document.createElement('section');
       paper.className = 'paper cover-page';
+      const imageContent = state.coverImage
+        ? `<img src="${state.coverImage}" alt="表紙の写真・絵">`
+        : `<div class="empty-text">写真・絵・大きな見出しを入れるところ</div>`;
+
       paper.innerHTML = `
-        <div class="cover-frame">
-          <h2 class="page-title">表紙</h2>
-          <div class="cover-title-box">題名</div>
-          <div class="cover-big-box">絵・写真・大きな見出し</div>
-          <div class="cover-lines">
-            <div class="line-row">調べるもの</div>
-            <div class="line-row">調べる理由</div>
-          </div>
+        <div class="cover-title-row">題名</div>
+        <div class="cover-image-box">${imageContent}</div>
+        <div class="page-tools">
+          <button class="change-cover-photo">表紙の写真変更</button>
+          <button class="remove-cover-photo danger">表紙の写真削除</button>
         </div>
       `;
       return paper;
     }
 
-    function createObservationPage(page, index) {
+    function createResearchPage() {
+      const paper = document.createElement('section');
+      paper.className = 'paper research-page';
+      paper.innerHTML = `
+        <h2 class="page-heading">調べるもの・調べる理由</h2>
+        <section class="writing-section research-large">
+          <div class="section-label">調べるもの</div>
+          <div class="ruled-lines"></div>
+        </section>
+        <section class="writing-section research-large">
+          <div class="section-label">調べる理由</div>
+          <div class="ruled-lines"></div>
+        </section>
+      `;
+      return paper;
+    }
+
+    function createObservationPage(page) {
       const paper = document.createElement('section');
       paper.className = 'paper observation-page';
       paper.dataset.id = page.id;
 
       const photoContent = page.imageData
-        ? `<img src="${page.imageData}" alt="観察写真${index + 1}">`
-        : `<div class="empty-photo">写真を追加すると<br>ここに表示されます</div>`;
+        ? `<img src="${page.imageData}" alt="観察写真">`
+        : `<div class="empty-text">写真を追加すると<br>ここに表示されます</div>`;
 
       paper.innerHTML = `
-        <h2 class="page-title">観察カード ${index + 1}</h2>
+        <h2 class="page-heading">観察カード</h2>
         <div class="top-area">
-          <div class="photo-box">${photoContent}</div>
           <div class="small-writing-box">
-            <div class="hand-line">日づけ</div>
+            <div class="hand-line">日付</div>
             <div class="hand-line">場所</div>
             <div class="hand-line">天気</div>
           </div>
+          <div class="photo-box">${photoContent}</div>
         </div>
 
-        <section class="writing-section large">
+        <section class="writing-section observation-large">
           <div class="section-label">観察したこと</div>
           <div class="ruled-lines"></div>
         </section>
 
-        <section class="writing-section medium">
+        <section class="writing-section observation-medium">
           <div class="section-label">気づいたこと・ふしぎに思ったこと</div>
           <div class="ruled-lines"></div>
         </section>
 
-        <section class="writing-section">
+        <section class="writing-section observation-small">
           <div class="section-label">自分の考え・予想</div>
           <div class="ruled-lines"></div>
         </section>
 
-        <div class="card-tools">
+        <div class="page-tools">
           <button class="change-photo">写真変更</button>
           <button class="duplicate-page">コピー</button>
           <button class="delete-page danger">削除</button>
         </div>
       `;
-
       return paper;
     }
 
     function bindPageTools() {
+      const coverChange = document.querySelector('.change-cover-photo');
+      if (coverChange) coverChange.addEventListener('click', () => els.coverPhotoInput.click());
+
+      const coverRemove = document.querySelector('.remove-cover-photo');
+      if (coverRemove) coverRemove.addEventListener('click', () => {
+        state.coverImage = '';
+        render();
+      });
+
       document.querySelectorAll('.observation-page').forEach(pageEl => {
         const id = pageEl.dataset.id;
 
@@ -598,7 +654,7 @@
             const file = input.files && input.files[0];
             if (!file) return;
             const imageData = await fileToDataURL(file);
-            const page = state.pages.find(p => p.id === id);
+            const page = state.observationPages.find(p => p.id === id);
             if (page) page.imageData = imageData;
             render();
           });
@@ -606,31 +662,37 @@
         });
 
         pageEl.querySelector('.duplicate-page').addEventListener('click', () => {
-          const page = state.pages.find(p => p.id === id);
+          const page = state.observationPages.find(p => p.id === id);
           if (!page) return;
-          const index = state.pages.findIndex(p => p.id === id);
-          state.pages.splice(index + 1, 0, { ...page, id: makeId() });
+          const index = state.observationPages.findIndex(p => p.id === id);
+          state.observationPages.splice(index + 1, 0, { ...page, id: makeId() });
           render();
         });
 
         pageEl.querySelector('.delete-page').addEventListener('click', () => {
-          state.pages = state.pages.filter(p => p.id !== id);
+          state.observationPages = state.observationPages.filter(p => p.id !== id);
           render();
         });
       });
     }
 
     function addBlankPage(shouldRender = true) {
-      state.pages.push({ id: makeId(), imageData: '' });
+      state.observationPages.push({ id: makeId(), imageData: '' });
       if (shouldRender) render();
     }
 
-    async function addFiles(files) {
+    async function addObservationFiles(files) {
       const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
       for (const file of imageFiles) {
         const imageData = await fileToDataURL(file);
-        state.pages.push({ id: makeId(), imageData });
+        state.observationPages.push({ id: makeId(), imageData });
       }
+      render();
+    }
+
+    async function setCoverFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      state.coverImage = await fileToDataURL(file);
       render();
     }
 
@@ -643,47 +705,62 @@
       });
     }
 
-    function printMode(mode) {
-      document.body.classList.remove('print-cover-only', 'print-observations-only');
-      if (mode === 'cover') document.body.classList.add('print-cover-only');
-      if (mode === 'observations') document.body.classList.add('print-observations-only');
+    function printSelected() {
+      if (!els.showCover.checked && !els.showResearch.checked && !els.showObservation.checked) {
+        alert('印刷するフォーマットを1つ以上チェックしてください。');
+        return;
+      }
       window.print();
-      setTimeout(() => {
-        document.body.classList.remove('print-cover-only', 'print-observations-only');
-      }, 500);
     }
 
     function saveDraft() {
       const data = {
+        showCover: els.showCover.checked,
+        showResearch: els.showResearch.checked,
+        showObservation: els.showObservation.checked,
         photoOrientation: els.photoOrientation.value,
-        coverPreview: els.coverPreview.value,
-        pages: state.pages
+        coverImage: state.coverImage,
+        observationPages: state.observationPages
       };
-      localStorage.setItem('summerObservationA4HandwritingTool', JSON.stringify(data));
+      localStorage.setItem('summerObservationA4HandwritingToolV2', JSON.stringify(data));
       alert('下書きを保存しました。');
     }
 
     function loadDraft() {
-      const raw = localStorage.getItem('summerObservationA4HandwritingTool');
+      const raw = localStorage.getItem('summerObservationA4HandwritingToolV2');
       if (!raw) {
         alert('保存された下書きがありません。');
         return;
       }
       const data = JSON.parse(raw);
+      els.showCover.checked = data.showCover ?? true;
+      els.showResearch.checked = data.showResearch ?? true;
+      els.showObservation.checked = data.showObservation ?? true;
       els.photoOrientation.value = data.photoOrientation || 'landscape';
-      els.coverPreview.value = data.coverPreview || 'show';
-      state.pages = Array.isArray(data.pages) ? data.pages : [];
+      state.coverImage = data.coverImage || '';
+      state.observationPages = Array.isArray(data.observationPages) ? data.observationPages : [];
       render();
     }
 
     function clearAll() {
       if (!confirm('すべての写真とページを消しますか？')) return;
-      state.pages = [];
+      state.coverImage = '';
+      state.observationPages = [];
       render();
     }
 
+    [els.showCover, els.showResearch, els.showObservation, els.photoOrientation].forEach(el => {
+      el.addEventListener('change', render);
+    });
+
+    els.coverPhotoInput.addEventListener('change', event => {
+      const file = event.target.files && event.target.files[0];
+      setCoverFile(file);
+      event.target.value = '';
+    });
+
     els.photoInput.addEventListener('change', event => {
-      addFiles(event.target.files);
+      addObservationFiles(event.target.files);
       event.target.value = '';
     });
 
@@ -697,14 +774,10 @@
     els.dropZone.addEventListener('drop', event => {
       event.preventDefault();
       els.dropZone.classList.remove('dragover');
-      addFiles(event.dataTransfer.files);
+      addObservationFiles(event.dataTransfer.files);
     });
 
-    els.photoOrientation.addEventListener('change', render);
-    els.coverPreview.addEventListener('change', render);
-    els.printAllBtn.addEventListener('click', () => printMode('all'));
-    els.printCoverBtn.addEventListener('click', () => printMode('cover'));
-    els.printPagesBtn.addEventListener('click', () => printMode('observations'));
+    els.printBtn.addEventListener('click', printSelected);
     els.addBlankBtn.addEventListener('click', () => addBlankPage(true));
     els.saveBtn.addEventListener('click', saveDraft);
     els.loadBtn.addEventListener('click', loadDraft);
