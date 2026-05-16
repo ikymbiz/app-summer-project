@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>夏休み観察プリント作成ツール</title>
+  <style>
+    :root {
+      --paper-w: 210mm;
+      --paper-h: 297mm;
+      --paper-padding: 12mm;
+      --gap: 8mm;
+      --border: #222;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --photo-height: 82mm;
+      --font-size: 12pt;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: #111827;
+    }
+    header {
+      padding: 18px 20px;
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+      border-bottom: 1px solid #dbe4f0;
+    }
+    header h1 { margin: 0 0 6px; font-size: 22px; }
+    header p { margin: 0; color: #4b5563; font-size: 14px; }
+    .app {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 18px;
+      padding: 18px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid #dbe4f0;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      position: sticky;
+      top: 12px;
+    }
+    .panel h2 { font-size: 16px; margin: 0 0 12px; }
+    .control { margin-bottom: 14px; }
+    label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+    input[type="text"], input[type="date"], select, textarea, input[type="number"] {
+      width: 100%; border: 1px solid #cfd8e3; border-radius: 10px;
+      padding: 9px 10px; font: inherit; background: #fff;
+    }
+    textarea { min-height: 72px; resize: vertical; line-height: 1.6; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .button-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+    button, .file-label {
+      border: 0; border-radius: 12px; padding: 10px 12px; font-weight: 700;
+      cursor: pointer; background: #e5edff; color: #173b86; text-align: center; font-size: 14px;
+    }
+    button.primary { background: var(--accent); color: white; }
+    button.danger { background: #fee2e2; color: #991b1b; }
+    button:hover, .file-label:hover { filter: brightness(0.97); }
+    input[type="file"] { display: none; }
+    .hint { color: #64748b; font-size: 12px; line-height: 1.6; margin-top: 8px; }
+    .preview-wrap { overflow: auto; padding: 6px 0 30px; }
+    .paper {
+      width: var(--paper-w); min-height: var(--paper-h); margin: 0 auto 18px;
+      background: white; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+      padding: var(--paper-padding); display: flex; flex-direction: column; gap: 8mm;
+    }
+    .sheet-header { border: 2px solid var(--border); border-radius: 8px; padding: 5mm; }
+    .title-line { display: flex; gap: 5mm; align-items: center; margin-bottom: 4mm; }
+    .main-title {
+      flex: 1; font-size: 20pt; font-weight: 800; border: 0;
+      border-bottom: 2px solid #111827; border-radius: 0; padding: 0 2mm 1mm;
+    }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; font-size: var(--font-size); }
+    .meta-field { display: flex; align-items: center; gap: 2mm; border-bottom: 1.5px solid #111827; min-height: 9mm; }
+    .meta-field span { white-space: nowrap; font-weight: 700; }
+    .meta-field input { border: 0; padding: 0; border-radius: 0; font-size: var(--font-size); }
+    .cards { display: grid; gap: var(--gap); }
+    .layout-1 .cards { grid-template-columns: 1fr; }
+    .layout-2 .cards { grid-template-columns: 1fr 1fr; }
+    .layout-4 .cards { grid-template-columns: 1fr 1fr; }
+    .photo-card { border: 2px solid var(--border); border-radius: 8px; overflow: hidden; break-inside: avoid; background: white; }
+    .photo-box {
+      height: var(--photo-height); border-bottom: 2px solid var(--border); background: #f8fafc;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+    }
+    .photo-box img { width: 100%; height: 100%; object-fit: contain; background: white; display: block; }
+    .empty-photo { color: #94a3b8; text-align: center; font-size: 13px; padding: 12px; line-height: 1.6; }
+    .card-body { padding: 4mm; font-size: var(--font-size); }
+    .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-bottom: 3mm; }
+    .write-field { margin-top: 3mm; }
+    .write-field .label-text { font-weight: 800; margin-bottom: 1.5mm; display: block; }
+    .write-field input, .write-field textarea, .mini-row input {
+      width: 100%; border: 1px solid #9ca3af; border-radius: 4px; padding: 2mm;
+      font-size: var(--font-size); font-family: inherit; line-height: 1.55;
+    }
+    .write-field textarea {
+      min-height: 20mm;
+      background-image: linear-gradient(transparent calc(1.6em - 1px), #d1d5db 1px);
+      background-size: 100% 1.6em; background-position-y: 2mm;
+    }
+    .card-tools { display: flex; gap: 6px; padding: 8px; background: #f8fafc; border-top: 1px dashed #cbd5e1; }
+    .card-tools button { padding: 7px 9px; border-radius: 9px; font-size: 12px; }
+    .no-print-note { text-align: center; color: #64748b; font-size: 13px; margin: 8px 0 0; }
+    .drop-zone {
+      border: 2px dashed #9db7e8; border-radius: 14px; padding: 14px; background: #f8fbff;
+      text-align: center; color: #475569; font-size: 13px; margin-bottom: 12px;
+    }
+    .drop-zone.dragover { background: #eaf2ff; border-color: #2563eb; }
+    @media screen and (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .panel { position: static; }
+    }
+    @media print {
+      body { background: white; }
+      header, .panel, .no-print-note, .card-tools { display: none !important; }
+      .app { display: block; padding: 0; }
+      .preview-wrap { overflow: visible; padding: 0; }
+      .paper { width: auto !important; min-height: auto !important; margin: 0; box-shadow: none; padding: 0; page-break-after: always; }
+      .paper:last-child { page-break-after: auto; }
+      input, textarea { color: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      textarea { resize: none; }
+    }
+  </style>
+  <style id="printPageStyle">@page { size: A4 portrait; margin: 12mm; }</style>
+</head>
+<body>
+  <header>
+    <h1>夏休み観察プリント作成ツール</h1>
+    <p>写真を入れて、観察したこと・考えた説・気づいたことを書ける印刷用シートを作れます。</p>
+  </header>
+
+  <main class="app">
+    <aside class="panel">
+      <h2>設定</h2>
+      <div class="drop-zone" id="dropZone">写真をここにドラッグ＆ドロップ<br />または下のボタンから追加</div>
+
+      <div class="control">
+        <label class="file-label" for="photoInput">写真を追加する</label>
+        <input id="photoInput" type="file" accept="image/*" multiple />
+        <p class="hint">複数枚をまとめて選べます。写真はこのブラウザ内だけで使われ、外部送信されません。</p>
+      </div>
+
+      <div class="row">
+        <div class="control">
+          <label for="paperSize">用紙</label>
+          <select id="paperSize"><option value="A4">A4</option><option value="B5">B5</option></select>
+        </div>
+        <div class="control">
+          <label for="orientation">向き</label>
+          <select id="orientation"><option value="portrait">縦</option><option value="landscape">横</option></select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="control">
+          <label for="layout">1ページの写真数</label>
+          <select id="layout"><option value="1">1枚</option><option value="2">2枚</option><option value="4">4枚</option></select>
+        </div>
+        <div class="control">
+          <label for="marginMm">印刷余白 mm</label>
+          <input id="marginMm" type="number" value="12" min="5" max="25" />
+        </div>
+      </div>
+
+      <div class="control"><label for="sheetTitle">タイトル</label><input id="sheetTitle" type="text" value="夏休み 観察記録" /></div>
+      <div class="row">
+        <div class="control"><label for="studentName">名前</label><input id="studentName" type="text" placeholder="例：山田 太郎" /></div>
+        <div class="control"><label for="gradeClass">学年・組</label><input id="gradeClass" type="text" placeholder="例：5年1組" /></div>
+      </div>
+      <div class="control"><label for="printDate">日付</label><input id="printDate" type="date" /></div>
+
+      <div class="button-row"><button class="primary" id="printBtn">印刷する</button><button id="addBlankBtn">空の枠を追加</button></div>
+      <div class="button-row"><button id="saveBtn">下書きを保存</button><button id="loadBtn">保存を読み込み</button></div>
+      <div class="button-row"><button class="danger" id="clearBtn">すべて消す</button><button id="sampleBtn">記入例</button></div>
+
+      <p class="hint">印刷画面では、ブラウザの設定で「背景のグラフィック」をオンにすると罫線がきれいに出ます。拡大縮小は「100%」がおすすめです。</p>
+    </aside>
+
+    <section class="preview-wrap">
+      <div id="pages"></div>
+      <p class="no-print-note">ここが印刷プレビューです。設定や記入内容はそのまま印刷されます。</p>
+    </section>
+  </main>
+
+  <template id="cardTemplate">
+    <article class="photo-card">
+      <div class="photo-box"><div class="empty-photo">写真を追加すると<br />ここに表示されます</div></div>
+      <div class="card-body">
+        <div class="mini-row"><input class="place" type="text" placeholder="場所" /><input class="date" type="text" placeholder="撮影日" /></div>
+        <div class="write-field"><span class="label-text">観察したこと</span><textarea class="observation" placeholder="色・形・大きさ・数・動きなど、見てわかったことを書く"></textarea></div>
+        <div class="write-field"><span class="label-text">自分の説・考え</span><textarea class="hypothesis" placeholder="なぜそうなったのか、自分の考えを書く"></textarea></div>
+        <div class="write-field"><span class="label-text">気づいたこと・次に調べたいこと</span><textarea class="memo" placeholder="疑問、比べたいこと、次に観察したいことを書く"></textarea></div>
+      </div>
+      <div class="card-tools"><button class="change-photo">写真変更</button><button class="duplicate-card">コピー</button><button class="delete-card danger">削除</button></div>
+    </article>
+  </template>
+
+  <script>
+    const state = { cards: [] };
+    const els = {
+      pages: document.getElementById('pages'), template: document.getElementById('cardTemplate'), photoInput: document.getElementById('photoInput'),
+      dropZone: document.getElementById('dropZone'), paperSize: document.getElementById('paperSize'), orientation: document.getElementById('orientation'),
+      layout: document.getElementById('layout'), marginMm: document.getElementById('marginMm'), sheetTitle: document.getElementById('sheetTitle'),
+      studentName: document.getElementById('studentName'), gradeClass: document.getElementById('gradeClass'), printDate: document.getElementById('printDate'),
+      printBtn: document.getElementById('printBtn'), addBlankBtn: document.getElementById('addBlankBtn'), saveBtn: document.getElementById('saveBtn'),
+      loadBtn: document.getElementById('loadBtn'), clearBtn: document.getElementById('clearBtn'), sampleBtn: document.getElementById('sampleBtn'),
+      printPageStyle: document.getElementById('printPageStyle')
+    };
+    const paperMap = { A4: { w: 210, h: 297 }, B5: { w: 182, h: 257 } };
+
+    function todayISO() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+    function makeId() { return crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()); }
+    function getSettings() {
+      return {
+        paperSize: els.paperSize.value, orientation: els.orientation.value, layout: Number(els.layout.value),
+        margin: Math.max(5, Math.min(25, Number(els.marginMm.value || 12))), title: els.sheetTitle.value,
+        name: els.studentName.value, gradeClass: els.gradeClass.value, printDate: els.printDate.value
+      };
+    }
+    function applyPaperSettings() {
+      const s = getSettings();
+      const base = paperMap[s.paperSize];
+      const isLandscape = s.orientation === 'landscape';
+      const w = isLandscape ? base.h : base.w;
+      const h = isLandscape ? base.w : base.h;
+      document.documentElement.style.setProperty('--paper-w', `${w}mm`);
+      document.documentElement.style.setProperty('--paper-h', `${h}mm`);
+      document.documentElement.style.setProperty('--paper-padding', `${s.margin}mm`);
+      document.documentElement.style.setProperty('--gap', s.layout === 1 ? '8mm' : '5mm');
+      let photoHeight = '82mm';
+      if (s.layout === 1) photoHeight = isLandscape ? '90mm' : '115mm';
+      if (s.layout === 2) photoHeight = isLandscape ? '62mm' : '74mm';
+      if (s.layout === 4) photoHeight = isLandscape ? '44mm' : '48mm';
+      document.documentElement.style.setProperty('--photo-height', photoHeight);
+      els.printPageStyle.textContent = `@page { size: ${s.paperSize} ${s.orientation}; margin: ${s.margin}mm; }`;
+    }
+    function escapeHtml(str) {
+      return String(str || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+    }
+    function formatDateJP(value) {
+      if (!value) return '';
+      const [y, m, d] = value.split('-');
+      return `${y}年${Number(m)}月${Number(d)}日`;
+    }
+    function createPaper(pageCards) {
+      const s = getSettings();
+      const paper = document.createElement('section');
+      paper.className = `paper layout-${s.layout}`;
+      const header = document.createElement('div');
+      header.className = 'sheet-header';
+      header.innerHTML = `
+        <div class="title-line"><input class="main-title sync-title" type="text" value="${escapeHtml(s.title)}" aria-label="タイトル" /></div>
+        <div class="meta-grid">
+          <div class="meta-field"><span>名前</span><input class="sync-name" type="text" value="${escapeHtml(s.name)}" /></div>
+          <div class="meta-field"><span>学年・組</span><input class="sync-grade" type="text" value="${escapeHtml(s.gradeClass)}" /></div>
+          <div class="meta-field"><span>日付</span><input class="sync-date" type="text" value="${formatDateJP(s.printDate)}" /></div>
+        </div>`;
+      const cardsWrap = document.createElement('div');
+      cardsWrap.className = 'cards';
+      pageCards.forEach(card => cardsWrap.appendChild(renderCard(card)));
+      paper.appendChild(header);
+      paper.appendChild(cardsWrap);
+      return paper;
+    }
+    function renderCard(card) {
+      const node = els.template.content.firstElementChild.cloneNode(true);
+      node.dataset.id = card.id;
+      const photoBox = node.querySelector('.photo-box');
+      if (card.imageData) photoBox.innerHTML = `<img src="${card.imageData}" alt="観察写真" />`;
+      node.querySelector('.place').value = card.place || '';
+      node.querySelector('.date').value = card.date || '';
+      node.querySelector('.observation').value = card.observation || '';
+      node.querySelector('.hypothesis').value = card.hypothesis || '';
+      node.querySelector('.memo').value = card.memo || '';
+      return node;
+    }
+    function captureCurrentInputs() {
+      document.querySelectorAll('.photo-card').forEach(cardEl => {
+        const card = state.cards.find(c => c.id === cardEl.dataset.id);
+        if (!card) return;
+        card.place = cardEl.querySelector('.place').value;
+        card.date = cardEl.querySelector('.date').value;
+        card.observation = cardEl.querySelector('.observation').value;
+        card.hypothesis = cardEl.querySelector('.hypothesis').value;
+        card.memo = cardEl.querySelector('.memo').value;
+      });
+    }
+    function render() {
+      applyPaperSettings();
+      captureCurrentInputs();
+      els.pages.innerHTML = '';
+      if (state.cards.length === 0) addBlankCard(false);
+      const perPage = Number(els.layout.value);
+      for (let i = 0; i < state.cards.length; i += perPage) {
+        els.pages.appendChild(createPaper(state.cards.slice(i, i + perPage)));
+      }
+      bindCardEvents();
+      bindSyncHeaderEvents();
+    }
+    function bindCardEvents() {
+      document.querySelectorAll('.photo-card').forEach(cardEl => {
+        const id = cardEl.dataset.id;
+        cardEl.querySelectorAll('input, textarea').forEach(input => {
+          input.addEventListener('input', () => {
+            const card = state.cards.find(c => c.id === id);
+            if (!card) return;
+            card.place = cardEl.querySelector('.place').value;
+            card.date = cardEl.querySelector('.date').value;
+            card.observation = cardEl.querySelector('.observation').value;
+            card.hypothesis = cardEl.querySelector('.hypothesis').value;
+            card.memo = cardEl.querySelector('.memo').value;
+          });
+        });
+        cardEl.querySelector('.delete-card').addEventListener('click', () => {
+          captureCurrentInputs();
+          state.cards = state.cards.filter(c => c.id !== id);
+          render();
+        });
+        cardEl.querySelector('.duplicate-card').addEventListener('click', () => {
+          captureCurrentInputs();
+          const card = state.cards.find(c => c.id === id);
+          if (!card) return;
+          const copy = { ...card, id: makeId() };
+          const index = state.cards.findIndex(c => c.id === id);
+          state.cards.splice(index + 1, 0, copy);
+          render();
+        });
+        cardEl.querySelector('.change-photo').addEventListener('click', () => {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.addEventListener('change', async () => {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const imageData = await fileToDataURL(file);
+            const card = state.cards.find(c => c.id === id);
+            if (card) card.imageData = imageData;
+            render();
+          });
+          input.click();
+        });
+      });
+    }
+    function bindSyncHeaderEvents() {
+      document.querySelectorAll('.sync-title').forEach(input => {
+        input.addEventListener('input', () => {
+          els.sheetTitle.value = input.value;
+          document.querySelectorAll('.sync-title').forEach(other => { if (other !== input) other.value = input.value; });
+        });
+      });
+      document.querySelectorAll('.sync-name').forEach(input => {
+        input.addEventListener('input', () => {
+          els.studentName.value = input.value;
+          document.querySelectorAll('.sync-name').forEach(other => { if (other !== input) other.value = input.value; });
+        });
+      });
+      document.querySelectorAll('.sync-grade').forEach(input => {
+        input.addEventListener('input', () => {
+          els.gradeClass.value = input.value;
+          document.querySelectorAll('.sync-grade').forEach(other => { if (other !== input) other.value = input.value; });
+        });
+      });
+      document.querySelectorAll('.sync-date').forEach(input => {
+        input.addEventListener('input', () => {
+          document.querySelectorAll('.sync-date').forEach(other => { if (other !== input) other.value = input.value; });
+        });
+      });
+    }
+    function addBlankCard(shouldRender = true) {
+      state.cards.push({ id: makeId(), imageData: '', place: '', date: '', observation: '', hypothesis: '', memo: '' });
+      if (shouldRender) render();
+    }
+    async function addFiles(files) {
+      captureCurrentInputs();
+      const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+      for (const file of imageFiles) {
+        const imageData = await fileToDataURL(file);
+        state.cards.push({ id: makeId(), imageData, place: '', date: '', observation: '', hypothesis: '', memo: '' });
+      }
+      render();
+    }
+    function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    function saveDraft() {
+      captureCurrentInputs();
+      localStorage.setItem('summerObservationPrintTool', JSON.stringify({ settings: getSettings(), cards: state.cards }));
+      alert('下書きを保存しました。');
+    }
+    function loadDraft() {
+      const raw = localStorage.getItem('summerObservationPrintTool');
+      if (!raw) return alert('保存された下書きがありません。');
+      const data = JSON.parse(raw);
+      const s = data.settings || {};
+      els.paperSize.value = s.paperSize || 'A4';
+      els.orientation.value = s.orientation || 'portrait';
+      els.layout.value = s.layout || 1;
+      els.marginMm.value = s.margin || 12;
+      els.sheetTitle.value = s.title || '夏休み 観察記録';
+      els.studentName.value = s.name || '';
+      els.gradeClass.value = s.gradeClass || '';
+      els.printDate.value = s.printDate || todayISO();
+      state.cards = Array.isArray(data.cards) ? data.cards : [];
+      render();
+    }
+    function clearAll() {
+      if (!confirm('すべての写真と記入内容を消しますか？')) return;
+      state.cards = [];
+      render();
+    }
+    function addSample() {
+      captureCurrentInputs();
+      if (state.cards.length === 1 && !state.cards[0].imageData && !state.cards[0].observation) state.cards = [];
+      state.cards.push({
+        id: makeId(), imageData: '', place: '庭のプランター', date: '8月3日',
+        observation: '葉の色は濃い緑色だった。前よりも葉の数が増えていて、つぼみが2つ見つかった。土は少し乾いていた。',
+        hypothesis: '暑い日が続いたので水が足りなくなり、土が乾きやすくなったのだと思う。朝に水をあげると、もっと元気に育つかもしれない。',
+        memo: '次は水をあげる時間を変えて、成長のようすを比べたい。'
+      });
+      render();
+    }
+    ['paperSize', 'orientation', 'layout', 'marginMm'].forEach(key => {
+      els[key].addEventListener('change', render);
+      els[key].addEventListener('input', render);
+    });
+    ['sheetTitle', 'studentName', 'gradeClass', 'printDate'].forEach(key => els[key].addEventListener('input', render));
+    els.photoInput.addEventListener('change', event => { addFiles(event.target.files); event.target.value = ''; });
+    els.addBlankBtn.addEventListener('click', () => addBlankCard(true));
+    els.printBtn.addEventListener('click', () => { captureCurrentInputs(); window.print(); });
+    els.saveBtn.addEventListener('click', saveDraft);
+    els.loadBtn.addEventListener('click', loadDraft);
+    els.clearBtn.addEventListener('click', clearAll);
+    els.sampleBtn.addEventListener('click', addSample);
+    els.dropZone.addEventListener('dragover', event => { event.preventDefault(); els.dropZone.classList.add('dragover'); });
+    els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('dragover'));
+    els.dropZone.addEventListener('drop', event => { event.preventDefault(); els.dropZone.classList.remove('dragover'); addFiles(event.dataTransfer.files); });
+    els.printDate.value = todayISO();
+    addBlankCard(false);
+    render();
+  </script>
+</body>
+</html>
