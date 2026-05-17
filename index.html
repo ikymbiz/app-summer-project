@@ -9,6 +9,7 @@
   <title>夏休み研究・観察プリント作成ツール</title>
   <style>
     :root {
+      color-scheme: light;
       --bg: #eef4ff;
       --card: #ffffff;
       --text: #111827;
@@ -429,12 +430,13 @@
 
     .ruled-lines {
       flex: 1;
+      background-color: #fff;
       background-image: repeating-linear-gradient(
         to bottom,
-        transparent 0,
-        transparent 9.5mm,
+        #fff 0,
+        #fff 9.5mm,
         var(--light-line) 9.7mm,
-        transparent 10mm
+        #fff 10mm
       );
     }
 
@@ -563,6 +565,28 @@
       .sheet-shell:last-child .paper {
         page-break-after: auto;
         break-after: auto;
+      }
+
+      .paper,
+      .summary-page,
+      .observation-page,
+      .cover-page,
+      .summary-section,
+      .writing-section,
+      .ruled-lines,
+      .photo-box,
+      .cover-image-frame {
+        background-color: #fff !important;
+      }
+
+      .ruled-lines {
+        background-image: repeating-linear-gradient(
+          to bottom,
+          #fff 0,
+          #fff 9.5mm,
+          var(--light-line) 9.7mm,
+          #fff 10mm
+        ) !important;
       }
 
       .empty-text,
